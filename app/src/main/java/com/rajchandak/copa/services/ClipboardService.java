@@ -57,14 +57,14 @@ public class ClipboardService extends Service {
         onTaskRemoved(intent);
         return START_STICKY;
     }
-
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
-        restartServiceIntent.setPackage(getPackageName());
-        startService(restartServiceIntent);
-        super.onTaskRemoved(rootIntent);
-    }
+//
+//    @Override
+//    public void onTaskRemoved(Intent rootIntent) {
+//        Intent restartServiceIntent = new Intent(getApplicationContext(),this.getClass());
+//        restartServiceIntent.setPackage(getPackageName());
+//        startService(restartServiceIntent);
+//        super.onTaskRemoved(rootIntent);
+//    }
 
     private ClipboardManager.OnPrimaryClipChangedListener mOnPrimaryClipChangedListener =
             new ClipboardManager.OnPrimaryClipChangedListener() {
@@ -78,29 +78,38 @@ public class ClipboardService extends Service {
                                 mClipboardManager.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML))
                         {
                             Log.i("Copied Text", clip.getItemAt(0).getText().toString());
-                            Toast.makeText(ClipboardService.this, "Copied to clipboard.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ClipboardService.this, "From COPA: Copied to clipboard.", Toast.LENGTH_SHORT).show();
 
-                            OkHttpClient client = new OkHttpClient();
-                            Request request = new Request.Builder().url("ws://34.94.157.63:3000/mobileClient")
-                                    .addHeader("content-type", "application/json")
-                                    .build();
-                            EchoWebSocketListener listener = new EchoWebSocketListener();
-                            WebSocket ws = client.newWebSocket(request, listener);
-                            JSONObject message = new JSONObject();
-                            try {
-                                message.put("user", "adam");
-                                message.put("from", "mobile");
-                                message.put("message", clip.getItemAt(0).getText().toString());
-                                message.put("timestamp", System.currentTimeMillis());
 
-                            } catch (JSONException e) {
-                                // TODO Auto-generated catch block
-                                e.printStackTrace();
-                            }
-                            ws.send(message.toString());
-                            Log.d("MESSAGE: ", message.toString());
-                            Connect.setMyBoolean2(true);
-                            client.dispatcher().executorService().shutdown();
+                            // Post Request
+
+
+
+
+
+
+
+//                            OkHttpClient client = new OkHttpClient();
+//                            Request request = new Request.Builder().url("ws://34.94.157.63:3000/mobileClient")
+//                                    .addHeader("content-type", "application/json")
+//                                    .build();
+//                            EchoWebSocketListener listener = new EchoWebSocketListener();
+//                            WebSocket ws = client.newWebSocket(request, listener);
+//                            JSONObject message = new JSONObject();
+//                            try {
+//                                message.put("user", "adam");
+//                                message.put("from", "mobile");
+//                                message.put("message", clip.getItemAt(0).getText().toString());
+//                                message.put("timestamp", System.currentTimeMillis());
+//
+//                            } catch (JSONException e) {
+//                                // TODO Auto-generated catch block
+//                                e.printStackTrace();
+//                            }
+//                            ws.send(message.toString());
+//                            Log.d("MESSAGE: ", message.toString());
+//                            Connect.setMyBoolean2(true);
+//                            client.dispatcher().executorService().shutdown();
                         }
                     }
 

@@ -68,7 +68,7 @@ public class DesktopFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
-        enableSwipe();
+        //enableSwipe();
 
         Connect.addMyBooleanListener(new ConnectionBooleanChangedListener() {
             @Override
@@ -76,7 +76,6 @@ public class DesktopFragment extends Fragment {
                 // do something
                 list.clear();
                 getData();
-                Log.d("SOMETHING HAPPENED", "OnMyBooleanChanged: ");
                 myClipboard = (ClipboardManager) getActivity().getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
 
                 myClip = ClipData.newPlainText("label", list.get(0).getName());
