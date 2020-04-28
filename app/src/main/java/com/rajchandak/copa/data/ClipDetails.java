@@ -4,19 +4,23 @@ package com.rajchandak.copa.data;
 import com.google.gson.annotations.SerializedName;
 
 public class ClipDetails {
-    @SerializedName("_id")
-    private String _id;
+
     @SerializedName("from")
     private String from;
     @SerializedName("fromType")
     private String fromType;
     @SerializedName("clipboardText")
     private String clipboardText;
-    @SerializedName("userId")
-    private String userId;
+    @SerializedName("timestamp")
+    private long timestamp;
 
-    public String get_id() {
-        return _id;
+    public ClipDetails() {}
+
+    public ClipDetails(String fromType, String from, long timestamp, String clipboardText) {
+        this.fromType = fromType;
+        this.from = from;
+        this.timestamp = timestamp;
+        this.clipboardText = clipboardText;
     }
 
     public String getFrom() {
@@ -31,7 +35,7 @@ public class ClipDetails {
         return clipboardText;
     }
 
-    public String getUserId() {
-        return userId;
+    public long getTimestamp() {
+        return timestamp;
     }
 }

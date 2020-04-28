@@ -26,6 +26,7 @@ import com.rajchandak.copa.data.ClipDetails;
 import com.rajchandak.copa.helpers.APIError;
 import com.rajchandak.copa.helpers.ErrorUtils;
 import com.rajchandak.copa.helpers.RestEndpoints;
+import com.rajchandak.copa.helpers.RetrieveSharedPreferences;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -73,12 +74,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
     Button mAuthorizeBtn;
-    Button mSignOutBtn;
-    Button mGetClipsBtn;
-    private TextView statusTextView;
 
     private static Retrofit retrofit;
-    private RestEndpoints RestEndpoints;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,21 +84,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Log.d(LOG_TAG, "oncreate");
         mAuthorizeBtn = (Button)findViewById(R.id.authorizeBtn);
-        mSignOutBtn = (Button)findViewById(R.id.signOutBtn);
-        mGetClipsBtn = (Button)findViewById(R.id.getClipsBtn);
-
-        statusTextView = (TextView)findViewById(R.id.statusTextView);
-        statusTextView.setText("STATUS WILL BE DISPLAYED HERE");
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(NODE_SERVER)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        RestEndpoints = retrofit.create(RestEndpoints.class);
-
-        // Hide display
-        mSignOutBtn.setVisibility(View.GONE);
 
         // AppAuth
         enablePostAuthorizationFlows();
@@ -177,8 +165,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void persistAuthState(@NonNull AuthState authState) {
 
-
-
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear(); //[important] Clearing your editor before using it.
@@ -195,25 +181,11 @@ public class LoginActivity extends AppCompatActivity {
                 .apply();
     }
 
-    @Nullable
-    private AuthState restoreAuthState() {
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String jsonString = preferences.getString(AUTH_STATE, "");
-        if (!TextUtils.isEmpty(jsonString)) {
-            try {
-                return AuthState.fromJson(jsonString);
-            } catch (JSONException jsonException) {
-                // should never happen
-            }
-        }
-        return null;
-
-
-    }
 
     private void enablePostAuthorizationFlows() {
-        mAuthState = restoreAuthState();
+        RetrieveSharedPreferences retrieveSharedPreferences = new RetrieveSharedPreferences();
+        mAuthState = retrieveSharedPreferences.restoreAuthState(getApplicationContext());
         if(mAuthState!=null)
         {
             Log.d(LOG_TAG,mAuthState.toJsonString());
@@ -268,7 +240,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public static class SignOutListener implements Button.OnClickListener {
+    public class SignOutListener implements Button.OnClickListener {
 
         private final LoginActivity mLoginActivity;
 
@@ -284,70 +256,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public static class GetClipsListener implements Button.OnClickListener {
-        private final LoginActivity mLoginActivity;
-        private AuthState mAuthState;
-        private AuthorizationService mAuthorizationService;
-
-        public GetClipsListener(@NonNull LoginActivity loginActivity, @NonNull AuthState authState, @NonNull AuthorizationService authorizationService) {
-            mLoginActivity = loginActivity;
-            mAuthState = authState;
-            mAuthorizationService = authorizationService;
-        }
-
-        @Override
-        public void onClick(View v) {
-            mAuthState.performActionWithFreshTokens(mAuthorizationService, new AuthState.AuthStateAction() {
-                @Override
-                public void execute(
-                        @Nullable String accessToken,
-                        @Nullable String idToken,
-                        @Nullable AuthorizationException ex) {
-                    if (ex != null){
-                        // negotiation for fresh token failed
-                        return;
-                    }
-
-                    Log.i(LOG_TAG, String.format("TODO: call get clips with [Access Token: %s, ID Token: %s]", accessToken, idToken));
-
-                    //TODO: Remove hardcoding of userID
-                    JWT jwt = new JWT(accessToken);
-                    String userID = jwt.getClaim("preferred_username").asString();
-                    Call<List<ClipDetails>> call = mLoginActivity.RestEndpoints.getClips(String.format("Bearer %s", accessToken), userID);
-                    Log.d(LOG_TAG, "HTTP Request GetClips: "+call.request().toString());
-                    call.enqueue(new Callback<List<ClipDetails>>() {
-                        @Override
-                        public void onResponse(Call<List<ClipDetails>> call, Response<List<ClipDetails>> response) {
-                            if (response.isSuccessful()) {
-                                // clipDetailsList will have clipboard sent by the Node server
-                                List<ClipDetails> clipDetailsList = response.body();
-                                mLoginActivity.statusTextView.setText("TOTAL NUM OF CLIPS RECEIVED: "+clipDetailsList.size());
-                                Log.d(LOG_TAG, "GET CLIPS SUCCEEDED");
-                                Toast.makeText(mLoginActivity, "GET CLIPS SUCCESS", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                APIError error = ErrorUtils.parseError(response);
-                                StringBuffer errMsg = new StringBuffer();
-                                errMsg.append("GET CLIPS FAILURE: ErrorCode: ")
-                                        .append(response.code())
-                                        .append(", ErrorMessage: ")
-                                        .append(response.message())
-                                        .append(", ")
-                                        .append(error.getMessage());
-                                Log.d(LOG_TAG+" ERROR ", errMsg.toString());
-                                Toast.makeText(mLoginActivity, "GET CLIPS FAILED", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<ClipDetails>> call, Throwable t) {
-                            Log.d(LOG_TAG+" ERROR ", t.getMessage());
-                            Toast.makeText(mLoginActivity, t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-        }
-    }
 }

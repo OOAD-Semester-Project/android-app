@@ -27,7 +27,7 @@ public class ItemObjects {
     public long getLongDate() {
         return _date;
     }
-    public void setDate(String _date) {
-        this._date = Long.parseLong(_date);
+    public void setDate(long _date) {
+        this._date = _date;
     }
 }
