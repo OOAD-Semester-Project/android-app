@@ -17,9 +17,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.rajchandak.copa.helpers.APIError;
+import com.rajchandak.copa.helpers.ErrorUtils;
+import com.rajchandak.copa.helpers.RestEndpoints;
 import com.rajchandak.copa.helpers.RetrieveSharedPreferences;
 import com.rajchandak.copa.services.ClipboardService;
 import com.rajchandak.copa.viewpagerfragments.DesktopFragment;
@@ -36,6 +41,9 @@ import net.openid.appauth.TokenResponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -67,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String NODE_SERVER = "https://clipboard-syncronization-app.appspot.com/";
 
     private static Retrofit retrofit;
+    public RestEndpoints restEndpoints;
+
     private static boolean authorizationFlowInitialized = false;
 
     @Override
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 .baseUrl(NODE_SERVER)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        restEndpoints = retrofit.create(RestEndpoints.class);
 
         Log.d("authorizationFlow", authorizationFlowInitialized + "");
         if (!authorizationFlowInitialized)
@@ -172,10 +184,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearAuthState() {
-        getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .remove(AUTH_STATE)
-                .apply();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(AUTH_STATE);
+        editor.apply();
     }
 
     private void enablePostAuthorizationFlows() {
@@ -239,21 +252,59 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public class SignOutListener implements Button.OnClickListener {
-
-        private final MainActivity mMainActivity;
-
-        public SignOutListener(@NonNull MainActivity mainActivity) {
-            mMainActivity = mainActivity;
-        }
-
-        @Override
-        public void onClick(View view) {
-            mMainActivity.mAuthState = null;
-            mMainActivity.clearAuthState();
-            mMainActivity.enablePostAuthorizationFlows();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            //String.format("Bearer %s",accessToken)
+            Call<Void> call = restEndpoints.executeLogout();
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d(LOG_TAG, "Logout Successful");
+                    }
+                    else {
+                        APIError error = ErrorUtils.parseError(response);
+                        StringBuffer errMsg = new StringBuffer();
+                        errMsg.append("LOGOUT FAILURE: ErrorCode: ")
+                                .append(response.code())
+                                .append(", ErrorMessage: ")
+                                .append(response.message())
+                                .append(", ")
+                                .append(error.getMessage());
+                        Log.e(LOG_TAG, errMsg.toString());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(LOG_TAG, t.getMessage());
+                }
+            });
+
+            mAuthState = null;
+            clearAuthState();
+            finishAffinity();
+            System.exit(0);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
