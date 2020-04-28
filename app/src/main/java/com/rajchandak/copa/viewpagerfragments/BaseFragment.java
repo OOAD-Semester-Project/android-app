@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,19 +18,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.auth0.android.jwt.JWT;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.rajchandak.copa.R;
 import com.rajchandak.copa.data.ClipDetails;
 import com.rajchandak.copa.data.DeleteResponse;
+import com.rajchandak.copa.data.ItemObjects;
 import com.rajchandak.copa.helpers.APIError;
 import com.rajchandak.copa.helpers.ErrorUtils;
 import com.rajchandak.copa.helpers.RestEndpoints;
 import com.rajchandak.copa.helpers.RetrieveSharedPreferences;
 import com.rajchandak.copa.view.Adapter;
-import com.rajchandak.copa.data.ItemObjects;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -43,13 +47,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static com.rajchandak.copa.LoginActivity.LOG_TAG;
+import static com.rajchandak.copa.MainActivity.LOG_TAG;
 
 public class BaseFragment extends Fragment {
 

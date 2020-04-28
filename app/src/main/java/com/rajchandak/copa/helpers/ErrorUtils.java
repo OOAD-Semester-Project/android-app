@@ -1,6 +1,7 @@
 package com.rajchandak.copa.helpers;
 
-import com.rajchandak.copa.LoginActivity;
+
+import com.rajchandak.copa.MainActivity;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -12,7 +13,7 @@ import retrofit2.Response;
 public class ErrorUtils {
     public static APIError parseError(Response<?> response) {
         Converter<ResponseBody, APIError> converter =
-                LoginActivity.getRetrofit()
+                MainActivity.getRetrofit()
                         .responseBodyConverter(APIError.class, new Annotation[0]);
 
         APIError error;
