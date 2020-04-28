@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.nkzawa.emitter.Emitter;
-import com.rajchandak.copa.data.ClipDetails;
-import com.rajchandak.copa.data.ItemObjects;
 
 import org.json.JSONException;
 import org.json.JSONObject;

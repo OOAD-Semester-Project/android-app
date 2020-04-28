@@ -8,6 +8,7 @@ public class ItemObjects {
     private long _date;
     private String _id;
     private String fromType;
+    private String from;
 
     public String getName()
     {
@@ -48,5 +49,15 @@ public class ItemObjects {
     public void setFromType(String fromType)
     {
         this.fromType = fromType;
+    }
+
+    public String getFrom()
+    {
+        return from;
+    }
+
+    public void setFrom(String from)
+    {
+        this.from = from;
     }
 }

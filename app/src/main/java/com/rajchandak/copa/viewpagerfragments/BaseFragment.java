@@ -163,6 +163,7 @@ public class BaseFragment extends Fragment {
                                     item.setDate(clip.getTimestamp());
                                     item.setID(clip.getID());
                                     item.setFromType(clip.getFromType());
+                                    item.setFrom(clip.getFrom());
                                     list.add(item);
                                 }
 

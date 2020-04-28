@@ -56,6 +56,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         final int p = position;
         holder.content.setText(arrayList.get(position).getName());
+        holder.from.setText("From Device: " + arrayList.get(position).getFrom());
         holder.date.setText(arrayList.get(position).getDate());
         holder.copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +78,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView date;
+        TextView from;
         TextView content;
         ImageButton copyButton;
 
@@ -84,6 +86,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         public MyViewHolder(View itemView) {
             super(itemView);
             date = (TextView) itemView.findViewById(R.id.date);
+            from = (TextView) itemView.findViewById(R.id.from);
             content = (TextView) itemView.findViewById(R.id.content);
             copyButton = (ImageButton) itemView.findViewById(R.id.copyButton);
 

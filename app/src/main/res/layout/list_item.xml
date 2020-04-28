@@ -30,7 +30,7 @@
                         android:id="@+id/date"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="4dp"
                         android:text="@string/date"
                         android:textColor="#000"
                         android:textSize="18sp"
@@ -46,6 +46,14 @@
                         android:layout_gravity="end"
                         android:layout_weight="0.05" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="From Device: "
+                    android:textColor="#555"
+                    android:layout_marginBottom="4dp"/>
 
                 <TextView
                     android:id="@+id/content"
