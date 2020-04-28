@@ -1,7 +1,4 @@
-package com.rajchandak.copa.view;
-//
-// Created by rajkc on 22-02-2020.
-//
+package com.rajchandak.copa.data;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +6,8 @@ import java.util.Date;
 public class ItemObjects {
     private String _name;
     private long _date;
+    private String _id;
+    private String fromType;
 
     public String getName()
     {
@@ -29,5 +28,25 @@ public class ItemObjects {
     }
     public void setDate(long _date) {
         this._date = _date;
+    }
+
+    public String getID()
+    {
+        return _id;
+    }
+
+    public void setID(String _id)
+    {
+        this._id= _id;
+    }
+
+    public String getFromType()
+    {
+        return fromType;
+    }
+
+    public void setFromType(String fromType)
+    {
+        this.fromType = fromType;
     }
 }

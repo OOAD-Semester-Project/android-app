@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class ClipDetails {
 
+    @SerializedName("_id")
+    private String _id;
     @SerializedName("from")
     private String from;
     @SerializedName("fromType")
@@ -21,6 +23,18 @@ public class ClipDetails {
         this.from = from;
         this.timestamp = timestamp;
         this.clipboardText = clipboardText;
+    }
+
+    public ClipDetails(String _id, String fromType, String from, long timestamp, String clipboardText) {
+        this._id = _id;
+        this.fromType = fromType;
+        this.from = from;
+        this.timestamp = timestamp;
+        this.clipboardText = clipboardText;
+    }
+
+    public String getID() {
+        return _id;
     }
 
     public String getFrom() {

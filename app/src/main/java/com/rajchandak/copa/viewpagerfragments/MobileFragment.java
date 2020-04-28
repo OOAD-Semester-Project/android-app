@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.rajchandak.copa.data.ClipDetails;
-import com.rajchandak.copa.view.ItemObjects;
+import com.rajchandak.copa.data.ItemObjects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,8 +22,11 @@ public class MobileFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mSocket.on("newData", onNewMobileData);
         super.getData("mobile");
+
+        mSocket.on("newData", onNewMobileData);
+        mSocket.on("newDataArrived", onNewMobileDataDeleted);
+
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -33,29 +36,38 @@ public class MobileFragment extends BaseFragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("new_clip", "run");
+                    Log.d("new_clip", args.toString());
 
                     JSONObject data = (JSONObject) args[0];
-
-
+                    Log.d("new_clip_data",data.toString());
                     try {
                         // Get clip data
                         if(data.getString("fromType").equals("mobile"))
                         {
-                            Log.d("new_clip_mobile", data.toString());
-                            ItemObjects item = new ItemObjects();
-                            ClipDetails clip;
-                            clip = new ClipDetails(data.getString("from"), data.getString("fromType"), data.getLong("timestamp"), data.getString("clipboardText"));
-                            item.setName(clip.getClipboardText());
-                            item.setDate(clip.getTimestamp());
-                            list.add(item);
-                            adapter.notifyDataSetChanged();
+                            getData("mobile");
                         }
 
 
                     } catch (JSONException e) {
                         return;
                     }
+
+                }
+            });
+        }
+    };
+
+    public Emitter.Listener onNewMobileDataDeleted = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("new_clip", args.toString());
+
+                    JSONObject data = (JSONObject) args[0];
+                    Log.d("new_clip_data",data.toString());
+                    getData("mobile");
 
                 }
             });

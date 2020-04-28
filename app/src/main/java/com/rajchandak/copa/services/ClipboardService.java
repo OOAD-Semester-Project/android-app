@@ -20,26 +20,16 @@ import com.rajchandak.copa.helpers.DeviceInfo;
 import com.rajchandak.copa.helpers.ErrorUtils;
 import com.rajchandak.copa.helpers.RestEndpoints;
 import com.rajchandak.copa.helpers.RetrieveSharedPreferences;
-import com.rajchandak.copa.socket.Connect;
-import com.rajchandak.copa.socket.EchoWebSocketListener;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
 import net.openid.appauth.AuthorizationService;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.WebSocket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.rajchandak.copa.LoginActivity.LOG_TAG;
 
 
 public class ClipboardService extends Service {
@@ -122,7 +112,6 @@ public class ClipboardService extends Service {
                                         return;
                                     }
 
-                                    //TODO: Fill it with the actual timestamp when the clip was created i.e. a text was copied to clipboard
                                     Long timestamp = System.currentTimeMillis();
 
                                     //NOTE: This must be mobile for mobile device
@@ -131,7 +120,6 @@ public class ClipboardService extends Service {
                                     //NOTE: Recommend use of helper class to get device name
                                     String deviceName = DeviceInfo.getInstance().getDeviceName();
 
-                                    //TODO: This should be replaced with actual clipboard text, for now it's just a random text
                                     String clipBoardText = clip.getItemAt(0).getText().toString();
 
                                     ClipDetails sendClipDetails = new ClipDetails(deviceType, deviceName, timestamp, clipBoardText);

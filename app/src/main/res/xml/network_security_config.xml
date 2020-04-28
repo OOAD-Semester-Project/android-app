@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">mockapi.io</domain>
-        <domain includeSubdomains="true">34.94.157.63:3000</domain>
-        <domain includeSubdomains="true">10.203.131.160:3000/</domain>
+        <domain includeSubdomains="true">clipboard-syncronization-app.appspot.com</domain>
+        <domain includeSubdomains="true">copa-keycloak.herokuapp.com/auth/realms/copa/protocol/openid-connect/auth</domain>
+        <domain includeSubdomains="true">copa-keycloak.herokuapp.com/auth/realms/copa/protocol/openid-connect/token</domain>
 
     </domain-config>
 </network-security-config>

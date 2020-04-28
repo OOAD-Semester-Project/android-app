@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.rajchandak.copa.data.ClipDetails;
-import com.rajchandak.copa.view.ItemObjects;
+import com.rajchandak.copa.data.ItemObjects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +26,7 @@ public class DesktopFragment extends BaseFragment {
 
         super.getData("desktop");
         mSocket.on("newData", onNewDesktopData);
+        mSocket.on("newDataArrived", onNewDesktopDataDeleted);
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -44,20 +45,30 @@ public class DesktopFragment extends BaseFragment {
                         // Get clip data
                         if(data.getString("fromType").equals("desktop"))
                         {
-                            Log.d("new_clip_mobile", data.toString());
-                            ItemObjects item = new ItemObjects();
-                            ClipDetails clip;
-                            clip = new ClipDetails(data.getString("from"), data.getString("fromType"), data.getLong("timestamp"), data.getString("clipboardText"));
-                            item.setName(clip.getClipboardText());
-                            item.setDate(clip.getTimestamp());
-                            list.add(item);
-                            adapter.notifyDataSetChanged();
+                            getData("desktop");
                         }
 
 
                     } catch (JSONException e) {
                         return;
                     }
+
+                }
+            });
+        }
+    };
+
+    public Emitter.Listener onNewDesktopDataDeleted = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("new_clip", args.toString());
+
+                    JSONObject data = (JSONObject) args[0];
+                    Log.d("new_clip_data",data.toString());
+                    getData("desktop");
 
                 }
             });

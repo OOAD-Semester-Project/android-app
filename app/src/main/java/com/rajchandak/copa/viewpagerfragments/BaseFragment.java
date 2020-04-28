@@ -19,15 +19,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.auth0.android.jwt.JWT;
-import com.github.nkzawa.emitter.Emitter;
 import com.rajchandak.copa.R;
 import com.rajchandak.copa.data.ClipDetails;
+import com.rajchandak.copa.data.DeleteResponse;
 import com.rajchandak.copa.helpers.APIError;
 import com.rajchandak.copa.helpers.ErrorUtils;
 import com.rajchandak.copa.helpers.RestEndpoints;
 import com.rajchandak.copa.helpers.RetrieveSharedPreferences;
 import com.rajchandak.copa.view.Adapter;
-import com.rajchandak.copa.view.ItemObjects;
+import com.rajchandak.copa.data.ItemObjects;
 
 import net.openid.appauth.AuthState;
 import net.openid.appauth.AuthorizationException;
@@ -39,6 +39,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -60,12 +61,12 @@ public class BaseFragment extends Fragment {
     public Retrofit retrofit;
     public RestEndpoints restEndpoints;
 
-    public final String NODE_SERVER = "http://clipboard-syncronization-app.appspot.com";
+    public final String NODE_SERVER = "https://clipboard-syncronization-app.appspot.com";
 
     public Socket mSocket;
     {
         try {
-            mSocket = IO.socket("http://clipboard-syncronization-app.appspot.com");
+            mSocket = IO.socket(NODE_SERVER);
         } catch (URISyntaxException e) {
             Log.d("new_clip", e.toString());
         }
@@ -79,7 +80,6 @@ public class BaseFragment extends Fragment {
 
         list = new ArrayList<>();
 
-        //getData();
 
         recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
         adapter = new Adapter(getActivity(),list);
@@ -105,6 +105,9 @@ public class BaseFragment extends Fragment {
     }
 
     public void getData(final String type) {
+
+        if(list!=null)
+            list.clear();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(NODE_SERVER)
@@ -160,6 +163,8 @@ public class BaseFragment extends Fragment {
                                 {
                                     item.setName(clip.getClipboardText());
                                     item.setDate(clip.getTimestamp());
+                                    item.setID(clip.getID());
+                                    item.setFromType(clip.getFromType());
                                     list.add(item);
                                 }
 
@@ -205,38 +210,60 @@ public class BaseFragment extends Fragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
 
-                if (direction == ItemTouchHelper.LEFT){
-                    final ItemObjects deletedModel = list.get(position);
-                    final int deletedPosition = position;
-                    adapter.removeItem(position);
-                    // showing snack bar with Undo option
-                    Snackbar snackbar = Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), " removed from Clipboard!", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // undo is selected, restore the deleted item
-                            adapter.restoreItem(deletedModel, deletedPosition);
-                        }
-                    });
-                    snackbar.setActionTextColor(Color.YELLOW);
-                    snackbar.show();
-                } else {
-                    final ItemObjects deletedModel = list.get(position);
-                    final int deletedPosition = position;
-                    adapter.removeItem(position);
-                    // showing snack bar with Undo option
-                    Snackbar snackbar = Snackbar.make(getActivity().getWindow().getDecorView().getRootView(), " removed from Recyclerview!", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+                final ItemObjects deletedModel = list.get(position);
+                adapter.removeItem(position);
 
-                            // undo is selected, restore the deleted item
-                            adapter.restoreItem(deletedModel, deletedPosition);
+                // Tell server that the clip has been deleted
+
+                RetrieveSharedPreferences retrieveSharedPreferences = new RetrieveSharedPreferences();
+                AuthState mAuthState = retrieveSharedPreferences.restoreAuthState(getActivity());
+                AuthorizationService mAuthorizationService = new AuthorizationService(getActivity());
+                mAuthState.performActionWithFreshTokens(mAuthorizationService, new AuthState.AuthStateAction() {
+                    @Override
+                    public void execute(@Nullable String accessToken, @Nullable String idToken, @Nullable AuthorizationException ex) {
+                        if (ex != null){
+                            Log.e(LOG_TAG, "Failed to get fresh tokens before delete request, "+ex.getMessage());
+                            return;
                         }
-                    });
-                    snackbar.setActionTextColor(Color.YELLOW);
-                    snackbar.show();
-                }
+
+                        Call<DeleteResponse> call = restEndpoints.deleteClip(String.format("Bearer %s",accessToken), deletedModel.getID(), deletedModel.getFromType());
+                        call.enqueue(new Callback<DeleteResponse>() {
+                            @Override
+                            public void onResponse(Call<DeleteResponse> call, Response<DeleteResponse> response) {
+                                if (response.isSuccessful()) {
+                                    DeleteResponse deleteResponse = response.body();
+                                    String status="";
+                                    if (deleteResponse.getSuccess()){
+                                        status = "SUCCESS";
+                                    }
+                                    else {
+                                        status = "FAILED";
+                                    }
+
+                                    Log.d(LOG_TAG, "STATUS: "+status+", MESSAGE: "+deleteResponse.getMessage());
+                                }
+                                else
+                                {
+                                    APIError error = ErrorUtils.parseError(response);
+                                    StringBuffer errMsg = new StringBuffer();
+                                    errMsg.append("DELETE CLIP FAILURE: ErrorCode: ")
+                                            .append(response.code())
+                                            .append(", ErrorMessage: ")
+                                            .append(response.message())
+                                            .append(", ")
+                                            .append(error.getMessage());
+                                    Log.e(LOG_TAG, errMsg.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DeleteResponse> call, Throwable t) {
+                                Log.d(LOG_TAG, "DELETE CLIP FAILED: "+t.getMessage());
+                            }
+                        });
+                    }
+                });
+
             }
 
             @Override

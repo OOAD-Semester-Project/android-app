@@ -70,8 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Node.js server to be used by retrofit
     //private static final String NODE_SERVER = "http://fierce-caverns-43797.herokuapp.com";
-    private static final String NODE_SERVER = "http://clipboard-syncronization-app.appspot.com/";
-
+    private static final String NODE_SERVER = "https://clipboard-syncronization-app.appspot.com/";
 
     Button mAuthorizeBtn;
 
@@ -180,8 +179,6 @@ public class LoginActivity extends AppCompatActivity {
                 .remove(AUTH_STATE)
                 .apply();
     }
-
-
 
     private void enablePostAuthorizationFlows() {
         RetrieveSharedPreferences retrieveSharedPreferences = new RetrieveSharedPreferences();
