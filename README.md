@@ -1,5 +1,8 @@
 # Copy Once Paste Anywhere - Android App Repo
 
+## Link To Project 6 Report PDF: [OOAD Project 6 (Final Report)](https://github.com/OOAD-Semester-Project/copa-electronjs-app/blob/master/OOAD%20Project%206.pdf)
+
+## Introduction
 The is the GitHub repository of the Android app of our project. You can install the [APK](https://github.com/OOAD-Semester-Project/android-app/raw/master/base.apk) on your Android smartphone and try it out! (*Requires Android 9 or lower*)
 
 Team Members
