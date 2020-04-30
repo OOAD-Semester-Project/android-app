@@ -48,6 +48,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Main Screen of the application.
  * Uses Inheritance to extend the base class AppCompatActivity that provides all the lifecycle hooks.
+ * THIS CLASS AND THE OTHER JAVA CLASSES (except the files in the data directory) CONTROLLER FROM THE MVC DESIGN PATTERN.
  */
 public class MainActivity extends AppCompatActivity {
 
