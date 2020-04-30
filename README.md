@@ -1,6 +1,6 @@
-# Copy Once Paste Anywhere
+# Copy Once Paste Anywhere - Android App Repo
 
-The is the GitHub repository of the Android app of our project. You can install the [APK](https://github.com/OOAD-Semester-Project/android-app/blob/master/base.apk) on your Android smartphone and try it out! (*Requires Android 9 or lower*)
+The is the GitHub repository of the Android app of our project. You can install the [APK](https://github.com/OOAD-Semester-Project/android-app/raw/master/base.apk) on your Android smartphone and try it out! (*Requires Android 9 or lower*)
 
 Team Members
 ---
