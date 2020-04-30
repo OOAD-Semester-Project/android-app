@@ -1,6 +1,6 @@
 # Copy Once Paste Anywhere
 
-The is the GitHub repository of the Android application of our project. You can install this application using this [APK]() (Requires Android 9 or lower).
+The is the GitHub repository of the Android app of our project. You can install the [APK](https://github.com/OOAD-Semester-Project/android-app/blob/master/base.apk) on your Android smartphone and try it out! (*Requires Android 9 or lower*)
 
 Team Members
 ---
@@ -10,22 +10,18 @@ Team Members
 
 Prerequisites
 ---
-1. [Node.js](https://nodejs.org/en/download/) (12.16.2)
-2. npm (Comes with Node.js)
-3. [Docker](https://docs.docker.com/get-docker/) (optional)
+1. Download and install [Java 8](https://java.com/en/download/help/download_options.xml)
+2. Knowledge about developing software using Java
+2. Atleast 8 GB RAM since the Android Studio emulator takes up a lot of RAM.
 
 Installation
 ----
-Use the below command in the project directory for installing the required packages and libraries.
-```
-npm install
-```
+Install the official Android development IDE - Android Studio from [here](https://developer.android.com/studio)
 
 How to run
 ----
-Go into the project directory and execute the below command to start the server.
-```
-npm start
-```
-The node server will start listening in the port `3010`.
+Simply open Android Studio, build and run the application by clicking on the green play button as highlighted in the image below.The default build tool **Gradle** will install all the necessary third party libraries.
+
+![](https://github.com/OOAD-Semester-Project/android-app/blob/master/android_studio_run.png)
+
 
