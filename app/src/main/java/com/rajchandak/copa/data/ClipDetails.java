@@ -3,6 +3,10 @@ package com.rajchandak.copa.data;
 
 import com.google.gson.annotations.SerializedName;
 
+
+/**
+ * POJO for a single item in the clipboard list shown to the user.
+ */
 public class ClipDetails {
 
     @SerializedName("_id")
@@ -16,6 +20,10 @@ public class ClipDetails {
     @SerializedName("timestamp")
     private long timestamp;
 
+
+    /**
+     * Using Method overloading (compile time polymorphism) with the use of parametrized constructors.
+     */
     public ClipDetails() {}
 
     public ClipDetails(String fromType, String from, long timestamp, String clipboardText) {

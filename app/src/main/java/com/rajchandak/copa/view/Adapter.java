@@ -1,7 +1,4 @@
 package com.rajchandak.copa.view;
-//
-// Created by rajkc on 22-02-2020.
-//
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -18,7 +15,9 @@ import com.rajchandak.copa.data.ItemObjects;
 
 import java.util.ArrayList;
 
-
+/**
+ * Recycler View adapter to show the clipboard list to the user.
+ */
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     private LayoutInflater inflater;
@@ -32,17 +31,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         this.arrayList = arrayList;
     }
 
+    /**
+     * Method to remove an item from the list.
+     * @param position
+     */
     public void removeItem(int position) {
         arrayList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, arrayList.size());
     }
-    public void restoreItem(ItemObjects model, int position) {
-        arrayList.add(position, model);
-        // notify item added by position
-        notifyItemInserted(position);
-    }
 
+    /**
+     * Uses polymorphism to handle the lifecycle-hook for when a view holder is created.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -52,9 +56,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         return holder;
     }
 
+    /**
+     * Lifecycle-hook for when the viewholder is bound to the fragment it resides in.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final int p = position;
         holder.content.setText(arrayList.get(position).getName());
         holder.from.setText("From Device: " + arrayList.get(position).getFrom());
         holder.date.setText(arrayList.get(position).getDate());
@@ -70,11 +78,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     }
 
+    /**
+     * Simple getter method to get the size of the list.
+     * @return
+     */
     @Override
     public int getItemCount() {
         return arrayList.size();
     }
 
+    /**
+     * Inner class that represents a single item in the list and binds the view with the corresponding XML elements.
+     */
     class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView date;
@@ -85,10 +100,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            date = (TextView) itemView.findViewById(R.id.date);
-            from = (TextView) itemView.findViewById(R.id.from);
-            content = (TextView) itemView.findViewById(R.id.content);
-            copyButton = (ImageButton) itemView.findViewById(R.id.copyButton);
+            date = itemView.findViewById(R.id.date);
+            from = itemView.findViewById(R.id.from);
+            content = itemView.findViewById(R.id.content);
+            copyButton = itemView.findViewById(R.id.copyButton);
 
         }
 

@@ -1,7 +1,4 @@
 package com.rajchandak.copa.app;
-//
-// Created by rajkc on 22-02-2020.
-//
 
 import android.app.Application;
 import android.text.TextUtils;
@@ -10,6 +7,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * AppController class, using inheritance, is used for defining the Application level configs.
+ */
 public class AppController extends Application
 {
 

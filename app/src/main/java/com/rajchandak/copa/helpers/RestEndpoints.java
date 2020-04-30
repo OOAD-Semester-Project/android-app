@@ -15,6 +15,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
+/**
+ * Interface for all the retrofit restendpoints.
+ */
 public interface RestEndpoints {
 
     @GET("clips/{userID}")

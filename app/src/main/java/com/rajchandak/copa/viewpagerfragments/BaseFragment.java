@@ -49,6 +49,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.rajchandak.copa.MainActivity.LOG_TAG;
 
+/**
+ * Using Inheritance.
+ * Base Fragment extending the Fragment class to get access to all the lifecycle hooks.
+ * This class is inherited by the Desktop and Mobile fragments to create the ViewPager.
+ */
 public class BaseFragment extends Fragment {
 
     public ArrayList<ItemObjects> list;
@@ -73,6 +78,13 @@ public class BaseFragment extends Fragment {
     public BaseFragment() {
     }
 
+    /**
+     * Lifecycle-hook for this fragment for when the fragment is created and attached to its parent class.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View object
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -89,19 +101,13 @@ public class BaseFragment extends Fragment {
         // Connect to Socket endpoint
         mSocket.connect();
 
-//        Connect.addMyBooleanListener2(new ConnectionBooleanChangedListener2() {
-//            @Override
-//            public void OnMyBooleanChanged2() {
-//                // do something
-//                list.clear();
-//                getData();
-//                Log.d("SOMETHING HAPPENED MOB", "OnMyBooleanChanged2");
-//            }
-//        });
-
         return recyclerView;
     }
 
+    /**
+     * Method to get all the clips when the main screen of the app first opens.
+     * @param type
+     */
     public void getData(final String type) {
 
         if(list!=null)
@@ -145,6 +151,9 @@ public class BaseFragment extends Fragment {
                 String userID = jwt.getClaim("preferred_username").asString();
                 Call<List<ClipDetails>> call = restEndpoints.getClips(String.format("Bearer %s", accessToken), userID);
                 Log.d(LOG_TAG, "HTTP Request GetClips: "+call.request().toString());
+                /**
+                 * Making API request to get all the clips.
+                 */
                 call.enqueue(new Callback<List<ClipDetails>>() {
                     @Override
                     public void onResponse(Call<List<ClipDetails>> call, retrofit2.Response<List<ClipDetails>> response) {
@@ -197,6 +206,9 @@ public class BaseFragment extends Fragment {
 
     }
 
+    /**
+     * Method to enable swipe to delete feature.
+     */
     public void enableSwipe(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -205,6 +217,11 @@ public class BaseFragment extends Fragment {
                 return false;
             }
 
+            /**
+             * Delete API end-point called when a clip has been swiped.
+             * @param viewHolder
+             * @param direction
+             */
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
@@ -265,6 +282,16 @@ public class BaseFragment extends Fragment {
 
             }
 
+            /**
+             * Method that adds swipe animation
+             * @param c
+             * @param recyclerView
+             * @param viewHolder
+             * @param dX
+             * @param dY
+             * @param actionState
+             * @param isCurrentlyActive
+             */
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 

@@ -10,6 +10,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;
 
+/**
+ * Class to handle error utils
+ */
 public class ErrorUtils {
     public static APIError parseError(Response<?> response) {
         Converter<ResponseBody, APIError> converter =

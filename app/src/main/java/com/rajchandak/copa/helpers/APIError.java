@@ -1,5 +1,8 @@
 package com.rajchandak.copa.helpers;
 
+/**
+ * Throws an error when retrofit fails to connect with the server.
+ */
 public class APIError {
     private int statusCode;
     private String endpoint;

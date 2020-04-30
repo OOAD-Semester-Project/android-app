@@ -2,6 +2,9 @@ package com.rajchandak.copa.data;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * POJO to handle the delete clip requests.
+ */
 public class DeleteResponse {
     @SerializedName("success")
     private Boolean success;

@@ -1,7 +1,6 @@
 package com.rajchandak.copa;
 
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -19,8 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.rajchandak.copa.helpers.APIError;
 import com.rajchandak.copa.helpers.ErrorUtils;
@@ -47,6 +44,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+/**
+ * Main Screen of the application.
+ * Uses Inheritance to extend the base class AppCompatActivity that provides all the lifecycle hooks.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String CLIENT_ID = "clipboard-server";
 
     // Node.js server to be used by retrofit
-    //private static final String NODE_SERVER = "http://fierce-caverns-43797.herokuapp.com";
     private static final String NODE_SERVER = "https://clipboard-syncronization-app.appspot.com/";
 
     private static Retrofit retrofit;
@@ -79,11 +80,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static boolean authorizationFlowInitialized = false;
 
+    /**
+     * Initial lifecycle-hook for when the activity is created.
+     * We initialize all our variables here.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Log.d(LOG_TAG, "oncreate");
 
@@ -100,15 +105,23 @@ public class MainActivity extends AppCompatActivity {
             authorizationFlowInitialized = true;
             authorizeListener();
         }
-        // AppAuth
-        //enablePostAuthorizationFlows();
+
 
     }
 
+    /**
+     * Simple getter to return the current retrofit object.
+     * Using Encapsulation here. Retrofit object is private.
+     * @return Retrofit object
+     */
     public static Retrofit getRetrofit() {
         return retrofit;
     }
 
+    /**
+     * Lifecycle-hook triggered when a new intent is created.
+     * @param intent
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         Log.d(LOG_TAG, "onNewIntent");
@@ -116,6 +129,11 @@ public class MainActivity extends AppCompatActivity {
         checkIntent(intent);
     }
 
+    /**
+     * Method to check if the new intent is null or not.
+     * If not, we handle the authorization response here.
+     * @param intent
+     */
     private void checkIntent(@Nullable Intent intent) {
         if (intent != null) {
             Log.d(LOG_TAG, "checkIntent");
@@ -134,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Life-cycle hook for when an activity is started.
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -172,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Method to store the current auth state in the storage of the device.
+     * @param authState
+     */
     private void persistAuthState(@NonNull AuthState authState) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -183,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
         enablePostAuthorizationFlows();
     }
 
+    /**
+     * Method to remove any store auth states when the user clicks on logout.
+     */
     private void clearAuthState() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -191,6 +219,11 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Method that initialized the authorization flow.
+     * If the user is already logged in, this flow is skipped.
+     * We check for existing logins by checking for the authstate object stored in the device storage.
+     */
     private void enablePostAuthorizationFlows() {
         RetrieveSharedPreferences retrieveSharedPreferences = new RetrieveSharedPreferences();
         mAuthState = retrieveSharedPreferences.restoreAuthState(getApplicationContext());
@@ -207,13 +240,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent("com.android.ServiceStopped");
             sendBroadcast(intent);
 
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
-            viewPager = (ViewPager) findViewById(R.id.viewpagerMain);
+            viewPager = findViewById(R.id.viewpagerMain);
             setupViewPager(viewPager);
 
 
-            tabLayout = (TabLayout) findViewById(R.id.tabs);
+            tabLayout = findViewById(R.id.tabs);
             tabLayout.setupWithViewPager(viewPager);
 
             fragmentManager = getSupportFragmentManager();
@@ -252,6 +285,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Creates a menu option on the top right of the toolbar.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -259,6 +297,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method to handle clicks on the menu items
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -306,6 +349,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Method that sets up the tab view viewpager by creating two fragments - DesktopFragment & MobileFragment
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new DesktopFragment(), "Desktop");
@@ -313,8 +360,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * Inner class to handle the viewpager interactions
+     */
     class ViewPagerAdapter extends FragmentPagerAdapter {
-
 
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();

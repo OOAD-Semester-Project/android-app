@@ -12,12 +12,23 @@ import com.github.nkzawa.emitter.Emitter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Using Inheritance.
+ * This class extends the BaseFragment class to create the Desktop Fragment.
+ */
 public class DesktopFragment extends BaseFragment {
 
     public DesktopFragment () {
         super();
     }
 
+    /**
+     * Lifecycle-hook for this fragment for when the fragment is created and attached to its parent class.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return View object
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -29,6 +40,9 @@ public class DesktopFragment extends BaseFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+    /**
+     * Callback method for the socket connection on "newData"
+     */
     public Emitter.Listener onNewDesktopData = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -56,6 +70,9 @@ public class DesktopFragment extends BaseFragment {
         }
     };
 
+    /**
+     * Callback method for the socket connection on "newDataArrived"
+     */
     public Emitter.Listener onNewDesktopDataDeleted = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {

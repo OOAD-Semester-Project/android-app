@@ -1,7 +1,5 @@
 package com.rajchandak.copa.viewpagerfragments;
-//
-// Created by rajkc on 22-02-2020.
-//
+
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -10,6 +8,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 import java.lang.reflect.Field;
 
+/**
+ * Prevent swipe to change tabs so that swipe to delete feature can work.
+ */
 public class NonSwipeableViewPager extends ViewPager {
 
     public NonSwipeableViewPager(Context context) {

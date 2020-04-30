@@ -3,6 +3,11 @@ package com.rajchandak.copa.data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+
+/**
+ * THIS REPRESENTES THE "MODEL" FROM THE MVC DESIGN PATTERN.
+ * POJO for a single item in the clipboard list displayed to the user.
+ */
 public class ItemObjects {
     private String _name;
     private long _date;
@@ -24,9 +29,6 @@ public class ItemObjects {
         return new SimpleDateFormat("MM/dd/yyyy").format(new Date(_date));
     }
 
-    public long getLongDate() {
-        return _date;
-    }
     public void setDate(long _date) {
         this._date = _date;
     }
