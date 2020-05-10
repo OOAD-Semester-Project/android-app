@@ -22,11 +22,11 @@ Following is a brief description of this final architecture:
 
 ## Features:
 
-**1. Login and Sync:** In order to use our system, users need to login using their username and password on all their devices. In the GIF below, we can see that we're logging in with the same username on both devices - the Android phone (using the app) and the Desktop device (using the webapp). Once logged in, the user can see the shared clipboard on all their devices. The clipboards are split into two tabs - _Mobile_ and _Desktop_. Clips in the Mobile tab show all the clips that have been copied from Android devices using our app, while the clips in the Desktop tab show all the clips that have been copied from desktop/tablet/mobile devices using our webapp.
+**1. Login and Sync:** In order to use our system, users need to login using their username and password on all their devices. In the GIF below, we can see that we're logging in with the same username on both devices - the Android phone (using the app) and the Desktop device (using the webapp). Once logged in, the user can see the shared clipboard on all their devices. The clipboards are split into two tabs - _Mobile_ and _Desktop_. Clips in the Mobile tab show all the clips that have been copied from Android devices using our app, while the clips in the Desktop tab show all the clips that have been copied from desktop/tablet/mobile devices using our webapp. We are also showing to the user which specific device the copied clip originated from. Thus, we are also able to support multiple devices on the same platform, i.e. for instance, the user can log in to our app on two different Android devices, copy clips that will show up under the _Mobile_ tab, and our app will tell the user which specific device (eg. Oneplus A5010) the copied clip originated from.
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Login-and-sync.gif)
 
-**2. Copy from a Desktop device (using Web Browser) - Paste it anywhere:** Any piece of text or URL that is copied using the web app is instantantaneously available to paste on all other devices. In the GIF below, we can see that a piece of text copied on the desktop device is not only updated in the clips list under the desktop tab, but is also copied on the Android device, ready to be pasted! 
+**2. Copy from a Desktop device (using Web Browser) - Paste it anywhere:** Any piece of text or URL that is copied using the web app is instantantaneously available to paste on all other devices. In the GIF below, we can see that a piece of text copied on the desktop device (_desktop1_) is not only updated in the clips list under the _Desktop_ tab, but is also copied on the Android device, ready to be pasted! 
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Desktop-to-Android-copy-final.gif)
 
@@ -34,3 +34,10 @@ Following is a brief description of this final architecture:
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Desktop-delete-final.gif)
 
+**4. Copy from a Android device (using Android app) - Paste it anywhere:** Any piece of text or URL that is copied using the Android app is instantantaneously available to paste on all other devices. In the GIF below, we can see that a piece of text copied on the Android device (_Oneplus A5010_) is not only updated in the clips list under the _Android_ tab, but is also copied on the Desktop device, ready to be pasted!
+
+![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Android-to-Desktop-Copy-Final.gif)
+
+**5. Delete a clip from an Android device (using Android app):** On deleting any clip from the Android app, the clipboard is re-syncronized across all logged in devices. In the GIF below, we can see that deleting a clip on the Android app deletes that particular clip from the Desktop's webapp.
+
+![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Android-delete-final.gif)
