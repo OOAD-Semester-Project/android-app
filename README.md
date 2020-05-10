@@ -12,6 +12,6 @@ The is the GitHub repository of the Android app of our project. You can install 
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Login-and-sync.gif)
 
-**2. Copy from a Desktop device (using Web Browser) - Paste it in Android device:**
+**2. Copy from a Desktop device (using Web Browser) - Paste it anywhere:** Any piece of text or URL that is copied using the web app is instantantaneously available to paste on all other devices. In the GIF below, we can see that a piece of text copied on the desktop device is not only updated in the clips list under the desktop tab, but is also copied on the Android device, ready to be pasted! 
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Desktop-to-Android-copy-final.gif)
