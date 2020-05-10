@@ -29,3 +29,8 @@ Following is a brief description of this final architecture:
 **2. Copy from a Desktop device (using Web Browser) - Paste it anywhere:** Any piece of text or URL that is copied using the web app is instantantaneously available to paste on all other devices. In the GIF below, we can see that a piece of text copied on the desktop device is not only updated in the clips list under the desktop tab, but is also copied on the Android device, ready to be pasted! 
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Desktop-to-Android-copy-final.gif)
+
+**3. Delete a clip from a Desktop device (using Web Browser):** On deleting any clip from the Webapp, the clipboard is re-syncronized across all logged in devices. In the GIF below, we can see that deleting a clip on the webapp from either the _Mobile_ or the _Desktop_ tab deletes that particular clip from the Android device.
+
+![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Desktop-delete-final.gif)
+
