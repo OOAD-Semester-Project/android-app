@@ -45,3 +45,4 @@ Following is a brief description of this final architecture:
 **6. Different users don't share clipboards:** Clipboards are not shared across users. In other words, any changes made in the clipboard of UserA will not be seen the clipboard of UserB. In the GIF below, the current logged in user is by the username: _rajchandak_. Now, we open up a new browser window and sign in to the webapp using the username: _madhu_. We can observe that changes made in _rajchandak_'s clipboard are not reflected in _madhu_'s clipboard.
 
 ![](https://github.com/OOAD-Semester-Project/android-app/blob/master/media/Multiple-users.gif)
+
